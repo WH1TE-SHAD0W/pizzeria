@@ -1,0 +1,16 @@
+{% extends "base.html.j2" %}
+
+{% block title %}Create Order - Pizzeria{% endblock %}
+
+{% block content %}
+<h1>Create a New Order</h1>
+<form action="/create-order" method="post">
+    <label for="pizza">Pizza:</label>
+    <select id="pizza" name="pizza">
+        {% for pizza in pizzas %}
+            <option value="{{ pizza.id }}">{{ pizza.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Order Now</button>
+</form>
+{% endblock %}
