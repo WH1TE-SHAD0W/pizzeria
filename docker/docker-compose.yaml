@@ -1,0 +1,22 @@
+services:
+  web:
+    build: .
+    ports:
+      - 89:80
+    volumes:
+      - .:/usr/src/app
+    environment:
+        - DATA_SOURCE="Database"
+        - HOST="db"
+        - USER="root"
+        - PASSWORD="password"
+        - DATABASE="pizzeria"
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+volumes:
+  db_data:
