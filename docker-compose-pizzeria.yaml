@@ -2,7 +2,7 @@ services:
   web:
     build: .
     ports:
-      - 89:80
+      - 90:3000
     volumes:
       - .:/usr/src/app
     environment:
