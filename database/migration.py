@@ -37,7 +37,18 @@ def migrate_fresh():
     from app.models.topping import Topping
     from app.models.pizza_topping import PizzaTopping
     print(Model.metadata.tables.keys())
-    for table_name in Model.metadata.tables.keys():
+    migrate_order = [
+        'users',
+        'orders',
+        'pizzas',
+        'toppings',
+        'sides',
+        'drinks',
+        'desserts',
+        'pizza_toppings',
+    ]
+
+    for table_name in migrate_order:
         Base.metadata.create_all(engine, tables=[Model.metadata.tables[table_name]])
     print("Tables created successfully.")
 

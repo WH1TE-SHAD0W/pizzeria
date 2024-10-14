@@ -2,7 +2,10 @@ import os
 from venv import logger
 
 from flask import Flask, render_template, request, redirect, url_for
+from sqlalchemy import func
 from sqlalchemy.orm import sessionmaker
+
+from app.models.order import Order
 from app.models.pizza import Pizza
 from database.migration import engine
 
@@ -24,11 +27,15 @@ def my_orders():
 @app.route('/create-order-pizza', methods=['GET', 'POST'])
 def create_order_pizza():
     if request.method == 'POST':
+        highest_order_id = session.query(func.max(Order.order_id)).scalar()
+        if highest_order_id is None:
+            highest_order_id = 1
+        order = Order(highest_order_id + 1)
+        session.add(order)
         # Extract data from the request
         name = request.form['pizza']
-        pizza = Pizza(name, size='Medium', price=10.00)
+        pizza = Pizza(order.order_id, name, size='Medium', price=10.00)
         session.add(pizza)
-        session.commit()
         return redirect(url_for('create_order_side'))
     return render_template('create/pizza.html.j2')
 
@@ -50,7 +57,14 @@ def create_order_drink():
 def create_order_dessert():
     if request.method == 'POST':
         # Handle order creation logic here
+        try: session.commit()
+        except Exception as e:
+            logger.error(e)
+            session.rollback()
+        finally:
+            session.close()
         return redirect(url_for('my_orders'))
+
     return render_template('create/dessert.html.j2')
 
 @app.route('/login', methods=['GET', 'POST'])
