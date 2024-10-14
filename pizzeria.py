@@ -22,7 +22,13 @@ def index():
 
 @app.route('/my-orders')
 def my_orders():
-    return render_template('history.html.j2')
+    orders = session.query(Order).all()
+    orders_with_pizzas = []
+    for order in orders:
+        pizzas = session.query(Pizza).filter_by(order_id=order.order_id).all()
+        orders_with_pizzas.append({'order': order, 'pizzas': pizzas})
+
+    return render_template('history.html.j2', orders_with_pizzas=orders_with_pizzas)
 
 @app.route('/create-order-pizza', methods=['GET', 'POST'])
 def create_order_pizza():
