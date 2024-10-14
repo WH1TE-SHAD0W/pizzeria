@@ -22,12 +22,14 @@ print("Engine created successfully.")
 print("Base created successfully.")
 Base = sqlalchemy.orm.declarative_base()
 def migrate_fresh():
-    Base.metadata.drop_all(engine)
     from app.model import Model
     from app.models.user import User
     from app.models.order import Order
-    from app.models.item import Item
-    from app.models.item_order import ItemOrder
+    from app.models.pizza import Pizza
+    from app.models.side import Side
+    from app.models.drink import Drink
+    from app.models.dessert import Dessert
+    from app.models.topping import Topping
     print(Model.metadata.tables.keys())
     for table_name in Model.metadata.tables.keys():
         Base.metadata.create_all(engine, tables=[Model.metadata.tables[table_name]])
