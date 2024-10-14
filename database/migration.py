@@ -30,6 +30,7 @@ def migrate_fresh():
     from app.models.drink import Drink
     from app.models.dessert import Dessert
     from app.models.topping import Topping
+    from app.models.pizza_topping import PizzaTopping
     print(Model.metadata.tables.keys())
     for table_name in Model.metadata.tables.keys():
         Base.metadata.create_all(engine, tables=[Model.metadata.tables[table_name]])
