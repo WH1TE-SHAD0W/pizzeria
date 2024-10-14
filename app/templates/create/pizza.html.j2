@@ -1,0 +1,48 @@
+{% extends "layout.html.j2" %}
+
+{% block title %}Create Order - Pizzeria{% endblock %}
+
+{% block content %}
+<h1>Create your own pizza</h1>
+<form action="/create-order-pizza" method="post" class="space-y-4">
+    <div>
+        <label for="pizza" class="block text-sm font-medium text-gray-700">Name your pizza:</label>
+        <input type="text" id="pizza" name="pizza" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+    </div>
+
+    <div>
+        <label for="size" class="block text-sm font-medium text-gray-700">Select size:</label>
+        <select id="size" name="size" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="s">Small</option>
+            <option value="m">Medium</option>
+            <option value="l">Large</option>
+            <option value="xl">Extra Large</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="toppings" class="block text-sm font-medium text-gray-700">Select toppings:</label>
+        <select id="toppings" name="toppings" multiple required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <option value="pepperoni">Pepperoni</option>
+            <option value="mushrooms">Mushrooms</option>
+            <option value="onions">Onions</option>
+            <option value="sausage">Sausage</option>
+            <option value="bacon">Bacon</option>
+            <option value="extra_cheese">Extra Cheese</option>
+            <option value="black_olives">Black Olives</option>
+            <option value="green_peppers">Green Peppers</option>
+            <option value="pineapple">Pineapple</option>
+            <option value="spinach">Spinach</option>
+        </select>
+    </div>
+
+    <div class="flex justify-between">
+        <button type="button" class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Add Pizza
+        </button>
+        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Continue
+        </button>
+    </div>
+</form>
+{% endblock %}

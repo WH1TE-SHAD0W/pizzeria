@@ -25,12 +25,33 @@ def index():
 def my_orders():
     return render_template('history.html.j2', orders=orders)
 
-@app.route('/create-order', methods=['GET', 'POST'])
-def create_order():
+@app.route('/create-order-pizza', methods=['GET', 'POST'])
+def create_order_pizza():
+    if request.method == 'POST':
+        # Handle order creation logic here
+        return redirect(url_for('create_order_side'))
+    return render_template('create/pizza.html.j2', pizzas=pizzas)
+
+@app.route('/create-order-side', methods=['GET', 'POST'])
+def create_order_side():
+    if request.method == 'POST':
+        # Handle order creation logic here
+        return redirect(url_for('create_order_drink'))
+    return render_template('create/side.html.j2', pizzas=pizzas)
+
+@app.route('/create-order-drink', methods=['GET', 'POST'])
+def create_order_drink():
+    if request.method == 'POST':
+        # Handle order creation logic here
+        return redirect(url_for('create_order_dessert'))
+    return render_template('create/drink.html.j2', pizzas=pizzas)
+
+@app.route('/create-order-dessert', methods=['GET', 'POST'])
+def create_order_dessert():
     if request.method == 'POST':
         # Handle order creation logic here
         return redirect(url_for('my_orders'))
-    return render_template('create.html.j2', pizzas=pizzas)
+    return render_template('create/dessert.html.j2', pizzas=pizzas)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
