@@ -1,21 +1,17 @@
 import os
+from venv import logger
 
 from flask import Flask, render_template, request, redirect, url_for
+from sqlalchemy.orm import sessionmaker
+from app.models.pizza import Pizza
+from database.migration import engine
+
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app', 'templates')
 
 app = Flask(__name__, template_folder=template_dir)
 
-# Sample data
-pizzas = [
-    {'id': 1, 'name': 'Margherita'},
-    {'id': 2, 'name': 'Pepperoni'},
-    {'id': 3, 'name': 'Hawaiian'}
-]
-
-orders = [
-    {'id': 1, 'date': '2023-10-01', 'total': 20.00},
-    {'id': 2, 'date': '2023-10-02', 'total': 15.50}
-]
+Session = sessionmaker(bind=engine)
+session = Session()
 
 @app.route('/')
 def index():
@@ -23,35 +19,39 @@ def index():
 
 @app.route('/my-orders')
 def my_orders():
-    return render_template('history.html.j2', orders=orders)
+    return render_template('history.html.j2')
 
 @app.route('/create-order-pizza', methods=['GET', 'POST'])
 def create_order_pizza():
     if request.method == 'POST':
-        # Handle order creation logic here
+        # Extract data from the request
+        name = request.form['pizza']
+        pizza = Pizza(name, size='Medium', price=10.00)
+        session.add(pizza)
+        session.commit()
         return redirect(url_for('create_order_side'))
-    return render_template('create/pizza.html.j2', pizzas=pizzas)
+    return render_template('create/pizza.html.j2')
 
 @app.route('/create-order-side', methods=['GET', 'POST'])
 def create_order_side():
     if request.method == 'POST':
         # Handle order creation logic here
         return redirect(url_for('create_order_drink'))
-    return render_template('create/side.html.j2', pizzas=pizzas)
+    return render_template('create/side.html.j2')
 
 @app.route('/create-order-drink', methods=['GET', 'POST'])
 def create_order_drink():
     if request.method == 'POST':
         # Handle order creation logic here
         return redirect(url_for('create_order_dessert'))
-    return render_template('create/drink.html.j2', pizzas=pizzas)
+    return render_template('create/drink.html.j2')
 
 @app.route('/create-order-dessert', methods=['GET', 'POST'])
 def create_order_dessert():
     if request.method == 'POST':
         # Handle order creation logic here
         return redirect(url_for('my_orders'))
-    return render_template('create/dessert.html.j2', pizzas=pizzas)
+    return render_template('create/dessert.html.j2')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

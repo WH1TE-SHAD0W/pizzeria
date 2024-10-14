@@ -4,7 +4,12 @@ import dotenvfile
 import os
 
 # Load environment variables from .env file
-dotenvfile.loadfile('../.env')
+env_path = os.path.join(os.path.dirname(__file__), '../.env')
+try:
+    dotenvfile.loadfile(env_path)
+    print("Environment variables loaded successfully.")
+except FileNotFoundError:
+    print(f"Error: .env file not found at {env_path}")
 
 print("Environment variables loaded successfully.")
 # Retrieve environment variables
@@ -15,8 +20,8 @@ database = os.getenv('DATABASE')
 
 
 # Create the SQLAlchemy engine
-# engine = create_engine(f'mysql://{user}:{password}@{host}/{database}')
-engine = create_engine(f'mysql://root:password@localhost:99/pizzeria')
+engine = create_engine(f'mysql://{user}:{password}@{host}/{database}')
+# engine = create_engine(f'mysql://root:password@localhost:99/pizzeria')
 
 print("Engine created successfully.")
 print("Base created successfully.")
