@@ -5,12 +5,8 @@ services:
       - 90:3000
     volumes:
       - .:/usr/src/app
-    environment:
-        - DATA_SOURCE="Database"
-        - HOST="db"
-        - USER="root"
-        - PASSWORD="password"
-        - DATABASE="pizzeria"
+    env_file:
+      - .env
   db:
     image: mysql:latest
     restart: always
@@ -18,5 +14,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
     volumes:
       - db_data:/var/lib/mysql
+    ports:
+      - 99:3306
 volumes:
   db_data:
