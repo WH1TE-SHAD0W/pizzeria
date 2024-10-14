@@ -1,7 +1,9 @@
 import os
+from tokenize import Token
 from venv import logger
 
 from flask import Flask, render_template, request, redirect, url_for
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from sqlalchemy import func
 from sqlalchemy.orm import sessionmaker
 
@@ -12,6 +14,11 @@ from database.migration import engine
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app', 'templates')
 
 app = Flask(__name__, template_folder=template_dir)
+app.secret_key = Token  # Set a secret key for session management
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 Session = sessionmaker(bind=engine)
 session = Session()
