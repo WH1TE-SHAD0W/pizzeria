@@ -7,6 +7,7 @@ from app.model import Model
 
 
 class Order(Model):
+    from app.models.user import User
     __tablename__ = 'orders'
     order_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.user_id'), nullable=False)

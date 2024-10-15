@@ -9,6 +9,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.models.order import Order
 from app.models.pizza import Pizza
+from app.models.user import User
 from database.migration import engine
 
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'app', 'templates')
@@ -18,7 +19,6 @@ app.secret_key = Token  # Set a secret key for session management
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -27,8 +27,11 @@ session = Session()
 def index():
     return render_template('index.html.j2')
 
+
 @app.route('/my-orders')
+@login_required
 def my_orders():
+
     orders = session.query(Order).all()
     orders_with_pizzas = []
     for order in orders:
@@ -90,9 +93,21 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        highest_user_id = session.query(func.max(Order.order_id)).scalar()
+        if highest_user_id is None:
+            highest_order_id = 1
+        email = request.form['email']
+        password = request.form['password']
+        user = User(highest_user_id, email, password, True, True)
+        session.add(user)
+        session.commit()
+        login_user(user)
         # Handle registration logic here
-        return redirect(url_for('index'))
+        return redirect(url_for('index', user=user))
     return render_template('register.html.j2')
 
+@login_manager.user_loader
+def load_user(user_id):
+    return session.query(User).get(user_id)
 
 app.run(debug=True, host="0.0.0.0", port=3000)

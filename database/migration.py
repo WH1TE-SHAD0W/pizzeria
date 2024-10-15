@@ -30,8 +30,8 @@ migrate_order = [
 ]
 
 # Create the SQLAlchemy engine
-# engine = create_engine(f'mysql://{user}:{password}@{host}/{database}')
-engine = create_engine(f'mysql://root:password@localhost:99/pizzeria')
+engine = create_engine(f'mysql://{user}:{password}@{host}/{database}')
+# engine = create_engine(f'mysql://root:password@localhost:99/pizzeria')
 
 print("Engine created successfully.")
 print("Base created successfully.")
